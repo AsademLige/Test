@@ -1,0 +1,11 @@
+C:\Users\student\Desktop\Mover_C\Test\bin\Release\Test.exe.config
+C:\Users\student\Desktop\Mover_C\Test\bin\Release\Test.exe
+C:\Users\student\Desktop\Mover_C\Test\bin\Release\Test.pdb
+C:\Users\student\Desktop\Mover_C\Test\bin\Release\Mover_C.dll
+C:\Users\student\Desktop\Mover_C\Test\bin\Release\Mover_C.pdb
+C:\Users\student\Desktop\Mover_C\Test\obj\Release\Test.csprojResolveAssemblyReference.cache
+C:\Users\student\Desktop\Mover_C\Test\obj\Release\Test.Form1.resources
+C:\Users\student\Desktop\Mover_C\Test\obj\Release\Test.Properties.Resources.resources
+C:\Users\student\Desktop\Mover_C\Test\obj\Release\Test.csproj.GenerateResource.Cache
+C:\Users\student\Desktop\Mover_C\Test\obj\Release\Test.exe
+C:\Users\student\Desktop\Mover_C\Test\obj\Release\Test.pdb
