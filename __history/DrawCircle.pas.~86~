@@ -1,0 +1,192 @@
+unit DrawCircle;
+
+interface
+uses WinTypes, WinProcs, Messages, Classes, Graphics, Controls, ExtCtrls, SysUtils;
+
+const Step = 3;
+
+type
+   TMyDrawCircle = class(TGraphicControl)
+    private
+      FSize :Integer;
+      FObjColor :TColor;
+      FX, FY :Integer;
+    protected
+      procedure Paint();override;
+
+      procedure SetSize(value: Integer); virtual;
+      procedure SetTColor(value :TColor); virtual;
+      procedure SetX(Value :Integer); virtual;
+      procedure SetY(Value :Integer); virtual;
+    public
+      constructor Create(AOwner: TComponent); override;
+      procedure SetBounds(ALeft, ATop, AWidth, AHeight: Integer); override;
+
+      procedure MoveLeft(); virtual;
+      procedure MoveRigth(); virtual;
+      procedure MoveUp(); virtual;
+      procedure MoveDown(); virtual;
+    published
+      Property Size:Integer read FSize write SetSize;
+      Property ObjColor:TColor read FObjColor write SetTColor;
+      Property X :Integer read FX write SetX;
+      property Y :Integer read FY write SetY;
+
+      property Align;
+      property Color;
+      property Enabled;
+      property ParentColor;
+      property ParentShowHint;
+      property PopupMenu;
+      property ShowHint;
+      property Visible;
+   end;
+
+   procedure Register;
+implementation
+  Constructor TMyDrawCircle.Create(AOwner: TComponent);
+  begin
+    inherited Create(AOwner);
+    ControlStyle:=ControlStyle+[csFramed, csOpaque];
+    FSize := 20;
+    FObjColor := clblack;
+    Width := 100;
+    Height := 100;
+    FX := FSize div 2;
+    FY := FSize div 2;
+  end;
+
+  procedure Register;
+  begin
+    RegisterComponents('MyComp', [TMyDrawCircle]);
+  end;
+
+  procedure TMyDrawCircle.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
+  begin
+    SetSize(FSize);
+    inherited SetBounds(ALeft, ATop, AWidth, AHeight);
+    refresh();
+  end;
+
+  procedure TMyDrawCircle.Paint;
+  var TheRect: TRect;
+      Image: TBitmap;
+  begin
+    Image:=TBitmap.Create;
+    try
+      Image.Width := Width;
+      Image.Height := Height;
+      TheRect:=ClientRect;
+      with Image.Canvas do
+      begin
+        if ParentColor then
+        begin
+          Brush.Color:=Parent.Brush.Color;
+        end else
+        begin
+          Brush.Color := Color;
+        end;
+        FillRect(TheRect);
+
+        if Enabled then
+        begin
+          Brush.Color:=FObjColor;
+        end else
+        begin
+          Brush.Color:=clGray;
+        end;
+
+        Ellipse(FX - FSize div 2, FY - FSize div 2, FX + Fsize div 2, FY + FSize div 2);
+      end;
+
+      Canvas.CopyRect(TheRect, Image.Canvas, ClientRect);
+    finally
+      Image.Free;
+    end;
+  end;
+
+  procedure TMyDrawCircle.SetSize(value: Integer);
+  var MaxSize :Integer;
+  begin
+    if (Width > height) then
+    begin
+      MaxSize := Height;
+    end else
+    begin
+      MaxSize := width;
+    end;
+    
+    if Value < 20 then Value := 20;
+
+    if (FX > Value div 2) then
+    begin
+      SetX(FX);
+    end else
+    begin
+      if (Value > MaxSize) then Value := MaxSize;
+    end;
+
+    if (FY > Value div 2) then
+    begin
+      SetY(FY);
+    end else
+    begin
+      if Value > MaxSize then Value := MaxSize;
+    end;
+
+    if FSize <> Value then
+    begin
+      FSize := Value;
+      SetX(FX);
+      SetY(FY);
+      Refresh;
+    end;
+  end;
+
+  procedure TMyDrawCircle.SetTColor(value: TColor);
+  begin
+    if (Value <> FObjColor) then FObjColor := Value;
+  end;
+
+  procedure TMyDrawCircle.MoveLeft();
+  begin
+    FX := FX - Step;
+  end;
+
+  procedure TMyDrawCircle.MoveRigth();
+  begin
+    FX := FX + Step;
+  end;
+
+  procedure TMyDrawCircle.MoveUp();
+  begin
+    FY := FY - Step;
+  end;
+
+  procedure TMyDrawCircle.MoveDown();
+  begin
+    FY := FY + Step;
+  end;
+
+  procedure TMyDrawCircle.SetX(value: Integer);
+  begin
+    if (Value > Width - FSize div 2) then Value := Width - FSize div 2;
+    if (Value < FSize div 2) then Value := FSize div 2;
+    if (FX <> Value) then
+    begin
+      FX := Value;
+      Refresh;
+    end;
+  end;
+
+  procedure TMyDrawCircle.SetY(value :Integer);
+  begin
+    if (Value > Height - FSize div 2) then Value := Height -  FSize div 2;
+    if (Value < FSize div 2) then Value := FSize div 2;
+    if (FY <> Value) then
+    begin
+      FY := Value;
+      Refresh;
+    end;
+  end;
+end.
